@@ -1,15 +1,12 @@
 from product import Product
-
+from inventory import Inventory
 
 stock = []
 
-
-test1 = Product('sample')
-test2 = Product('sample2')
-stock.append(test1)
-stock.append(test2)
+for i in range(10):
+    sample = Product(f'Test{i}')
+    stock.append(sample)
 
 
 
-print(test1.id)
-print(test2.id)
+main_program = Inventory()
