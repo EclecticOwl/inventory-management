@@ -1,5 +1,6 @@
 from product import Product
 from prettytable import PrettyTable
+import random
 
 class Inventory():
 
@@ -8,6 +9,8 @@ class Inventory():
     for i in range(1, 11):
         sample = Product(f'Test{i}')
         sample.description = 'test description {}'.format(i)
+        amount = random.randint(1, 10)
+        sample.quantity = amount
         stock.append(sample)
 
     def __init__(self):
@@ -16,8 +19,7 @@ class Inventory():
     def menu(self):
         # Options menu
 
-        print('Greetings, Human!\n')
-        print('What would you like to do from the available options?\n')
+        print('What would you like to do from the available options?\n>>> ')
 
         options = input(f'1) Show Available Inventory\n2) Add To Inventory\n3) Remove from inventory\n4) Exit Program\n\n>>> ')
         if options == '1':
@@ -34,10 +36,10 @@ class Inventory():
         # Display items in stock
 
         my_table = PrettyTable()
-        my_table.field_names = ['ID', 'Name', 'Description']
+        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity']
 
         for item in Inventory.stock:
-            my_table.add_row((item.id, item.name, item.description))
+            my_table.add_row((item.id, item.name, item.description, item.quantity))
         print(my_table)
 
         confirm = input('Would you like to go back to the menu?\n(Enter yes to go back to the menu.)\n')
@@ -68,10 +70,10 @@ class Inventory():
     def delete_item(self):
 
         my_table = PrettyTable()
-        my_table.field_names = ['ID', 'Name', 'Description']
+        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity']
 
         for item in Inventory.stock:
-            my_table.add_row((item.id, item.name, item.description))
+            my_table.add_row((item.id, item.name, item.description, item.quantity))
         print(my_table)
         
         confirm_response = ''
