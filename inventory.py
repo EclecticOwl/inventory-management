@@ -19,9 +19,15 @@ class Inventory():
     def menu(self):
         # Options menu
 
-        print('What would you like to do from the available options?\n>>> ')
+        print('''
+        1) Show Available Stock
+        2) Add To Stock
+        3) Remove From Stock
+        4) Search Stock
+        5) Exit Program
+            ''')
 
-        options = input(f'1) Show Available Inventory\n2) Add To Inventory\n3) Remove from inventory\n4) Exit Program\n\n>>> ')
+        options = input('What would you like to do from the available options?\n\n>>> ')
         if options == '1':
             self.show_items()
         elif options == '2':
@@ -29,6 +35,8 @@ class Inventory():
         elif options == '3':
             self.delete_item()
         elif options == '4':
+            self.search_item()
+        elif options == '5':
             print('\nNow exiting program')
             return
     
@@ -48,6 +56,7 @@ class Inventory():
             self.menu()
     
     def add_item(self):
+        # Add an item to the inventory
 
         confirm_response = ''
         while (confirm_response != 'yes'):
@@ -68,6 +77,7 @@ class Inventory():
                 self.menu()
     
     def delete_item(self):
+        # Delete an item from the inventory
 
         my_table = PrettyTable()
         my_table.field_names = ['ID', 'Name', 'Description', 'Quantity']
@@ -92,6 +102,25 @@ class Inventory():
                 self.delete_item()
             else:
                 self.menu()
+            
+    def search_item(self):
+
+        query = input('Please enter the item name that you wish to search for below:\n\n>>> ')
+ 
+
+        for item in Inventory.stock:
+            if query in item.name:
+                print(f'Item name:  {item.name}\n')
+                print(f'Item description: {item.description}\n')
+                print(f'Item quantity: {item.quantity}\n\n')
+                print('\n-----------------------\n')
+        
+        confirm = input('Would you like to go back to the menu?\n(Enter yes to go back to the menu.)\n')
+
+        if confirm == 'yes' or confirm == 'y':
+            self.menu()
+        
+        
 
 
 
