@@ -21,13 +21,13 @@ class Inventory():
 
     def menu(self):
         # Options menu
-        print('Menu options:\n')
+        print('Menu options:')
         print('''
         1) Show Available Stock
         2) Add To Stock
         3) Remove From Stock
         4) Search Stock
-        5) Exit Program\n
+        5) Exit Program
             ''')
 
         options = input('What would you like to do from the available options?\n\n>>> ')
@@ -56,7 +56,8 @@ class Inventory():
         for item in Inventory.stock:
             value = item.quantity * item.price
             value = babel.numbers.format_currency(value, "USD", locale='en_US')
-            my_table.add_row((item.id, item.name, item.description, item.quantity, item.price, value))
+            currency_price = babel.numbers.format_currency(item.price, "USD", locale='en_US')
+            my_table.add_row((item.id, item.name, item.description, item.quantity, currency_price, value))
         
         print(my_table)
 
@@ -69,11 +70,15 @@ class Inventory():
         while (confirm_response != 'yes'):
             prod_name = input('What is the name of the product?\n\n>>> ')
             prod_desc = input('Description of the product?\n\n>>> ')
+            prod_quantity = int(input('How many of the product are there?\n\n>>> '))
+            prod_price = float(input('Price of each unit?\n\n>>> '))
             confirm_response = input(f'You entered the following entries:\nName: {prod_name}\nDescription: {prod_desc}\n\nAre these correct?\n\n>>> ')
         
         if confirm_response == 'yes':
             item_add = Product(prod_name)
-            item_add.set_description(prod_desc)
+            item_add.description = prod_desc
+            item_add.quantity = prod_quantity
+            item_add.price = prod_price
             Inventory.stock.append(item_add)
 
             ask_again = input('Would you like to add an additional item?\n\n>>> ')
@@ -114,19 +119,21 @@ class Inventory():
         # Basic Search Criteria For Filtering Products
 
         query = input('Please enter the item name that you wish to search for below:\n\n>>> ')
- 
+        print('\nSearch Results:\n')
+        print('\n-----------------------\n')
+        search_len = 0
         for item in Inventory.stock:
             if query in item.name.lower():
+                search_len += 1
                 print(f'Item name:  {item.name}\n')
                 print(f'Item description: {item.description}\n')
                 print(f'Item quantity: {item.quantity}\n\n')
-                print(f'Item price: {item.price}\n\n')
+                print(f'Item price: {item.price}')
                 print('\n-----------------------\n')
         
-        confirm = input('Would you like to go back to the menu?\n(Enter yes to go back to the menu.)\n')
-
-        if confirm == 'yes' or confirm == 'y':
-            self.menu()
+        print(f'Total Search Results: {search_len}\n')
+        
+        self.menu()
         
         
 
