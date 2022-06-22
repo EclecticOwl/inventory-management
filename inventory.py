@@ -13,7 +13,7 @@ class Inventory():
         amount = random.randint(1, 10)
         price = random.randint(1, 30)
         sample.quantity = amount
-        sample.price = babel.numbers.format_currency(price, "USD", locale='en_US')
+        sample.price = price
         stock.append(sample)
 
     def __init__(self):
@@ -21,13 +21,13 @@ class Inventory():
 
     def menu(self):
         # Options menu
-
+        print('Menu options:\n')
         print('''
         1) Show Available Stock
         2) Add To Stock
         3) Remove From Stock
         4) Search Stock
-        5) Exit Program
+        5) Exit Program\n
             ''')
 
         options = input('What would you like to do from the available options?\n\n>>> ')
@@ -42,21 +42,25 @@ class Inventory():
         elif options == '5':
             print('\nNow exiting program')
             return
+        else:
+            print('The option you selected is not a valid option. Please re-select one.')
+            self.menu()
     
     def show_items(self):
         # Display items in stock
 
         my_table = PrettyTable()
-        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity', 'Price']
+        my_table.align = 'r'
+        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity', 'Price', 'Total Value']
 
         for item in Inventory.stock:
-            my_table.add_row((item.id, item.name, item.description, item.quantity, item.price))
+            value = item.quantity * item.price
+            value = babel.numbers.format_currency(value, "USD", locale='en_US')
+            my_table.add_row((item.id, item.name, item.description, item.quantity, item.price, value))
+        
         print(my_table)
 
-        confirm = input('Would you like to go back to the menu?\n(Enter yes to go back to the menu.)\n\n>>> ')
-
-        if confirm == 'yes' or confirm == 'y':
-            self.menu()
+        self.menu()
     
     def add_item(self):
         # Add an item to the inventory

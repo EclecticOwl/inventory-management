@@ -6,6 +6,7 @@ class Product:
         self.name = name
         self.description = ''
         self.quantity = 0
+        self.price = 0
         self.id = Product.id
         Product.id += 1
     
