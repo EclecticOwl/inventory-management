@@ -1,6 +1,7 @@
 from product import Product
 from prettytable import PrettyTable
 import random
+import babel.numbers
 
 class Inventory():
 
@@ -10,7 +11,9 @@ class Inventory():
         sample = Product(f'Test{i}')
         sample.description = 'test description {}'.format(i)
         amount = random.randint(1, 10)
+        price = random.randint(1, 30)
         sample.quantity = amount
+        sample.price = babel.numbers.format_currency(price, "USD", locale='en_US')
         stock.append(sample)
 
     def __init__(self):
@@ -44,13 +47,13 @@ class Inventory():
         # Display items in stock
 
         my_table = PrettyTable()
-        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity']
+        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity', 'Price']
 
         for item in Inventory.stock:
-            my_table.add_row((item.id, item.name, item.description, item.quantity))
+            my_table.add_row((item.id, item.name, item.description, item.quantity, item.price))
         print(my_table)
 
-        confirm = input('Would you like to go back to the menu?\n(Enter yes to go back to the menu.)\n')
+        confirm = input('Would you like to go back to the menu?\n(Enter yes to go back to the menu.)\n\n>>> ')
 
         if confirm == 'yes' or confirm == 'y':
             self.menu()
@@ -80,10 +83,10 @@ class Inventory():
         # Delete an item from the inventory
 
         my_table = PrettyTable()
-        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity']
+        my_table.field_names = ['ID', 'Name', 'Description', 'Quantity', 'Price']
 
         for item in Inventory.stock:
-            my_table.add_row((item.id, item.name, item.description, item.quantity))
+            my_table.add_row((item.id, item.name, item.description, item.quantity, item.price))
         print(my_table)
         
         confirm_response = ''
@@ -104,15 +107,16 @@ class Inventory():
                 self.menu()
             
     def search_item(self):
+        # Basic Search Criteria For Filtering Products
 
         query = input('Please enter the item name that you wish to search for below:\n\n>>> ')
  
-
         for item in Inventory.stock:
-            if query in item.name:
+            if query in item.name.lower():
                 print(f'Item name:  {item.name}\n')
                 print(f'Item description: {item.description}\n')
                 print(f'Item quantity: {item.quantity}\n\n')
+                print(f'Item price: {item.price}\n\n')
                 print('\n-----------------------\n')
         
         confirm = input('Would you like to go back to the menu?\n(Enter yes to go back to the menu.)\n')
